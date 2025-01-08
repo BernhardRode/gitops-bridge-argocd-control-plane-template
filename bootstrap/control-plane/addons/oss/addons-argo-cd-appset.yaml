@@ -11,17 +11,19 @@ spec:
         mergeKeys: [server]
         generators:
           - clusters:
-              selector:
-                matchLabels:
-                  environment: development
               values:
+                addonChart: argo-cd
                 addonChartVersion: 7.7.14
-          - clusters:
+                addonChartRepositoryNamespace: argocd
+                addonChartRepository: https://argoproj.github.io/argo-helm
               selector:
-                matchLabels:
-                  environment: testing
-              values:
-                addonChartVersion: 7.7.14
+                matchExpressions:
+                  - key: akuity.io/argo-cd-cluster-name
+                    operator: NotIn
+                    values: [in-cluster]
+                  - key: enable_argocd
+                    operator: In
+                    values: ["true"]
           - clusters:
               selector:
                 matchLabels:
