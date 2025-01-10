@@ -23,7 +23,7 @@ spec:
                     values: [in-cluster]
                   - key: enable_aws_load_balancer_controller
                     operator: In
-                    values: ["true"]
+                    values: ['true']
           - clusters:
               selector:
                 matchLabels:
@@ -42,14 +42,14 @@ spec:
     spec:
       project: default
       sources:
-        - repoURL: "{{metadata.annotations.addons_repo_url}}"
-          targetRevision: "{{metadata.annotations.addons_repo_revision}}"
+        - repoURL: '{{metadata.annotations.addons_repo_url}}'
+          targetRevision: '{{metadata.annotations.addons_repo_revision}}'
           ref: values
-        - chart: "{{values.addonChart}}"
-          repoURL: "{{values.addonChartRepository}}"
-          targetRevision: "{{values.addonChartVersion}}"
+        - chart: '{{values.addonChart}}'
+          repoURL: '{{values.addonChartRepository}}'
+          targetRevision: '{{values.addonChartVersion}}'
           helm:
-            releaseName: "{{values.addonChart}}"
+            releaseName: '{{values.addonChart}}'
             ignoreMissingValueFiles: true
             valueFiles:
               - $values/{{metadata.annotations.addons_repo_basepath}}environments/default/addons/{{values.addonChart}}/values.yaml
@@ -63,20 +63,20 @@ spec:
                 annotations:
                   eks.amazonaws.com/role-arn: {{metadata.annotations.aws_load_balancer_controller_iam_role_arn}}
       destination:
-        namespace: "{{metadata.annotations.aws_load_balancer_controller_namespace}}"
-        name: "{{name}}"
+        namespace: '{{metadata.annotations.aws_load_balancer_controller_namespace}}'
+        name: '{{name}}'
       syncPolicy:
         automated: {}
         syncOptions:
           - CreateNamespace=true
-          - ServerSideApply=true # Big CRDs.
+          - ServerSideApply=true  # Big CRDs.
       ignoreDifferences:
         - kind: Secret
           name: aws-load-balancer-tls
           jsonPointers: [/data]
         - group: admissionregistration.k8s.io
           kind: MutatingWebhookConfiguration
-          jqPathExpressions: [".webhooks[].clientConfig.caBundle"]
+          jqPathExpressions: ['.webhooks[].clientConfig.caBundle']
         - group: admissionregistration.k8s.io
           kind: ValidatingWebhookConfiguration
-          jqPathExpressions: [".webhooks[].clientConfig.caBundle"]
+          jqPathExpressions: ['.webhooks[].clientConfig.caBundle']
