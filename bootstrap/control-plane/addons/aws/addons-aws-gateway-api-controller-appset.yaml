@@ -3,6 +3,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   name: addons-aws-gateway-api-controller
+  namespace: "argocd"
 spec:
   syncPolicy:
     preserveResourcesOnDeletion: true
@@ -27,7 +28,7 @@ spec:
                     values: [in-cluster]
                   - key: enable_aws_gateway_api_controller
                     operator: In
-                    values: ['true']
+                    values: ["true"]
           - clusters:
               selector:
                 matchLabels:
@@ -46,14 +47,14 @@ spec:
     spec:
       project: default
       sources:
-        - repoURL: '{{metadata.annotations.addons_repo_url}}'
-          targetRevision: '{{metadata.annotations.addons_repo_revision}}'
+        - repoURL: "{{metadata.annotations.addons_repo_url}}"
+          targetRevision: "{{metadata.annotations.addons_repo_revision}}"
           ref: values
-        - chart: '{{values.addonChartRepositoryNamespace}}/{{values.addonChart}}'
-          repoURL: '{{values.addonChartRepository}}'
-          targetRevision: '{{values.addonChartVersion}}'
+        - chart: "{{values.addonChartRepositoryNamespace}}/{{values.addonChart}}"
+          repoURL: "{{values.addonChartRepository}}"
+          targetRevision: "{{values.addonChartVersion}}"
           helm:
-            releaseName: '{{values.addonChartReleaseName}}'
+            releaseName: "{{values.addonChartReleaseName}}"
             ignoreMissingValueFiles: true
             valueFiles:
               - $values/{{metadata.annotations.addons_repo_basepath}}environments/default/addons/{{values.addonChart}}/values.yaml
@@ -68,10 +69,10 @@ spec:
                 annotations:
                   eks.amazonaws.com/role-arn: {{metadata.annotations.aws_gateway_api_controller_iam_role_arn}}
       destination:
-        namespace: '{{metadata.annotations.aws_gateway_api_controller_namespace}}'
-        name: '{{name}}'
+        namespace: "{{metadata.annotations.aws_gateway_api_controller_namespace}}"
+        name: "{{name}}"
       syncPolicy:
         automated: {}
         syncOptions:
           - CreateNamespace=true
-          - ServerSideApply=true  # Big CRDs.
+          - ServerSideApply=true # Big CRDs.
