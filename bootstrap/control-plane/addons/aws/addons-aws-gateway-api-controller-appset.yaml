@@ -37,7 +37,7 @@ spec:
           - clusters:
               selector:
                 matchLabels:
-                  environment: prod
+                  environment: production
               values:
                 addonChartVersion: v1.1.0
   template:

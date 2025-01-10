@@ -24,7 +24,7 @@ spec:
                     values: [in-cluster]
                   - key: enable_external_dns
                     operator: In
-                    values: ['true']
+                    values: ["true"]
           - clusters:
               selector:
                 matchLabels:
@@ -34,23 +34,23 @@ spec:
           - clusters:
               selector:
                 matchLabels:
-                  environment: prod
+                  environment: production
               values:
                 addonChartVersion: 1.14.3
   template:
     metadata:
-      name: 'addon-{{.name}}-{{.values.addonChart}}'
+      name: "addon-{{.name}}-{{.values.addonChart}}"
     spec:
       project: default
       sources:
-        - repoURL: '{{.metadata.annotations.addons_repo_url}}'
-          targetRevision: '{{.metadata.annotations.addons_repo_revision}}'
+        - repoURL: "{{.metadata.annotations.addons_repo_url}}"
+          targetRevision: "{{.metadata.annotations.addons_repo_revision}}"
           ref: values
-        - chart: '{{.values.addonChart}}'
-          repoURL: '{{.values.addonChartRepository}}'
-          targetRevision: '{{.values.addonChartVersion}}'
+        - chart: "{{.values.addonChart}}"
+          repoURL: "{{.values.addonChartRepository}}"
+          targetRevision: "{{.values.addonChartVersion}}"
           helm:
-            releaseName: '{{.values.addonChart}}'
+            releaseName: "{{.values.addonChart}}"
             ignoreMissingValueFiles: true
             valueFiles:
               - $values/{{.metadata.annotations.addons_repo_basepath}}/charts/addons/{{.values.addonChart}}/values.yaml
@@ -66,8 +66,8 @@ spec:
               txtOwnerId: {{.metadata.annotations.aws_cluster_name}}
               policy: {{default "upsert-only" .metadata.annotations.external_dns_policy}}
       destination:
-        namespace: '{{.metadata.annotations.external_dns_namespace}}'
-        name: '{{.name}}'
+        namespace: "{{.metadata.annotations.external_dns_namespace}}"
+        name: "{{.name}}"
       syncPolicy:
         automated: {}
         syncOptions:

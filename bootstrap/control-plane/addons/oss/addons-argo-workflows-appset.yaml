@@ -24,7 +24,7 @@ spec:
                     values: [in-cluster]
                   - key: enable_argo_workflows
                     operator: In
-                    values: ['true']
+                    values: ["true"]
           - clusters:
               selector:
                 matchLabels:
@@ -34,7 +34,7 @@ spec:
           - clusters:
               selector:
                 matchLabels:
-                  environment: prod
+                  environment: production
               values:
                 addonChartVersion: 0.40.14
   template:
@@ -43,14 +43,14 @@ spec:
     spec:
       project: default
       sources:
-        - repoURL: '{{.metadata.annotations.addons_repo_url}}'
-          targetRevision: '{{.metadata.annotations.addons_repo_revision}}'
+        - repoURL: "{{.metadata.annotations.addons_repo_url}}"
+          targetRevision: "{{.metadata.annotations.addons_repo_revision}}"
           ref: values
-        - chart: '{{.values.addonChart}}'
-          repoURL: '{{.values.addonChartRepository}}'
-          targetRevision: '{{.values.addonChartVersion}}'
+        - chart: "{{.values.addonChart}}"
+          repoURL: "{{.values.addonChartRepository}}"
+          targetRevision: "{{.values.addonChartVersion}}"
           helm:
-            releaseName: '{{.values.addonChart}}'
+            releaseName: "{{.values.addonChart}}"
             ignoreMissingValueFiles: true
             valueFiles:
               - $values/{{.metadata.annotations.addons_repo_basepath}}environments/default/addons/{{.values.addonChart}}/values.yaml
@@ -58,9 +58,9 @@ spec:
               - $values/{{.metadata.annotations.addons_repo_basepath}}clusters/{.{name}}/addons/{{.values.addonChart}}/values.yaml
       destination:
         namespace: '{{default "argo-workflows" .metadata.annotations.argo_workflows_namespace}}'
-        name: '{{.name}}'
+        name: "{{.name}}"
       syncPolicy:
         automated: {}
         syncOptions:
           - CreateNamespace=true
-          - ServerSideApply=true  # Big CRDs.
+          - ServerSideApply=true # Big CRDs.
