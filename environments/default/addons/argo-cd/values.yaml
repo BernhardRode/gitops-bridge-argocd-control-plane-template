@@ -33,7 +33,6 @@ applicationSet:
     service:
       annotations:
         prometheus.io/scrape: true
-
 server:
   autoscaling:
     enabled: true
@@ -64,7 +63,10 @@ configs:
       type: helm
       url: public.ecr.aws
       enableOCI: "true"
+  params:
+    server.insecure: true # -- Run server without TLS
   cm:
+    timeout.reconciliation: 20s # -- Timeout to discover if a new manifests version got published to the repository
     application.resourceTrackingMethod: "annotation" #use annotation for tracking required for Crossplane
     resource.exclusions: |
       - kinds:
